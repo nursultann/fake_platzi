@@ -12,9 +12,14 @@ class Profile extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
             onPressed: () async {
               await AuthService.logout();
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                (route) => false,
+              );
             },
           ),
         ],
@@ -51,6 +56,21 @@ class Profile extends StatelessWidget {
                 Text(user['email']),
                 const SizedBox(height: 8),
                 Text('Role: ${user['role']}'),
+                const SizedBox(height: 32),
+
+                // 🔴 Logout button (если хочешь и в теле экрана)
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Logout'),
+                  onPressed: () async {
+                    await AuthService.logout();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                    );
+                  },
+                ),
               ],
             ),
           );
